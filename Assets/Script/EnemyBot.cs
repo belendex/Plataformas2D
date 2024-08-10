@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyBot : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class EnemyBot : MonoBehaviour
     public float visionRange;
     public Player player;
     public GameObject bulletEnemy;
+    public int lifes;
+    public bool alive;
+    public GameObject explosion;
+
     private int index;
     private bool canShot;
     private bool reloading;
@@ -22,12 +27,15 @@ public class EnemyBot : MonoBehaviour
     void Start()
     {
         canShot = true;
+        alive = true;
         player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (player.alive == false || alive == false) return;
+
         if (CanSeePlayer() == false)
         {
             amountShoot = 0;
@@ -155,6 +163,19 @@ public class EnemyBot : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         SetNewTarget();
         waiting = false;
+    }
+
+
+    public void TakeLife(int damage)
+    {
+        lifes -= damage;
+        if (lifes <= 0)
+        {
+            alive = false;
+            GameObject explo = Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(explo, 0.65f);
+            Destroy(gameObject);
+        }
     }
 
 

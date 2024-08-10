@@ -16,10 +16,17 @@ public class Player : MonoBehaviour
     public float checkRadius;
     public LayerMask layerGround;
     public GameObject bulletPlayer;
+    public bool alive;
     private float direccion;
 
+    public void Start()
+    {
+        UiManager.Instance.UpdateHearts(vidas);
+        alive = true;
+    }
     public void Update()
     {
+        if (alive == false) return;
         Movimiento();
         Jump();
         Shoot();
@@ -106,6 +113,17 @@ public class Player : MonoBehaviour
         animatorPlayer.SetBool("Shooting", false);
     }
 
+
+    public void TakeDamage(int damage)
+    {
+        vidas -= damage;
+        if (vidas <= 0)
+        {
+            alive = false;
+            vidas = 0;
+        }
+        UiManager.Instance.UpdateHearts(vidas);
+    }
     public void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

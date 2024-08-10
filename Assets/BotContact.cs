@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerContact : MonoBehaviour
+public class BotContact : MonoBehaviour
 {
-    public Player player;
+    public EnemyBot enemy;
 
     public void Start()
     {
-        player = GetComponent<Player>();
+        enemy = GetComponent<EnemyBot>();
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("EnemyBullet"))
+        if (collision.CompareTag("PlayerBullet"))
         {
-            player.TakeDamage(1);
-         
+            enemy.TakeLife(1);
+
             Destroy(collision.gameObject);//destruime la bala!
         }
     }
